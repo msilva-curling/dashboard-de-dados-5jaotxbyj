@@ -34,5 +34,21 @@
     "tsconfig.json",
     "tsconfig.node.json",
     "vite.config.ts"
-  ]
+  ],
+  "config": {
+    "showBadge": false,
+    "customBadgeText": "Feito por Matheuss",
+    "customBadgeUrl": "https://joao.dev",
+    "analytics": {
+      "enabled": true,
+      "trackingId": "GA-123456789"
+    },
+    "seo": {
+      "keywords": []
+    },
+    "features": {
+      "enableScreenshots": false,
+      "enableErrorReporting": true
+    }
+  }
 }

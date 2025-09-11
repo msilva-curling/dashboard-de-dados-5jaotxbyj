@@ -15,13 +15,17 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { AppSidebar } from '@/components/app-sidebar'
 
 const getPageTitle = (pathname: string): string => {
+  if (pathname.startsWith('/report-builder')) {
+    return pathname.split('/').pop() ? 'Editar Relatório' : 'Criar Relatório'
+  }
+
   switch (pathname) {
     case '/':
       return 'Dashboard Overview'
     case '/settings':
       return 'Configurações'
     case '/reports':
-      return 'Relatórios'
+      return 'Meus Relatórios'
     case '/help':
       return 'Ajuda'
     default:
