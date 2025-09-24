@@ -36,7 +36,7 @@
     "vite.config.ts"
   ],
   "config": {
-    "showBadge": false,
+    "showBadge": true,
     "customBadgeText": "Feito por Matheuss",
     "customBadgeUrl": "https://joao.dev",
     "analytics": {

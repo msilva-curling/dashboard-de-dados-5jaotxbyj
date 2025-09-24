@@ -3,40 +3,44 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './main.css'
 
+// Load Skip monitoring script
 loadSkipLib()
 
 createRoot(document.getElementById('root')!).render(<App />)
 
 function loadSkipLib() {
-  const events: Parameters<typeof window.onerror>[] = []
-  const w = window
-  const d = document
-  const scripts = d.createElement('script')
-
-  function onError(message, source, line, column, error) {
-    events.push([message, source, line, column, error])
+  // Only load if not already loaded
+  if ((window as any).skipLibLoaded) {
+    return
   }
 
-  w.onerror = onError
-  w.onunhandledrejection = (errorEvent) =>
-    onError(
-      errorEvent.reason.message,
-      errorEvent.reason.source,
-      errorEvent.reason.line,
-      errorEvent.reason.column,
-      errorEvent.reason,
-    )
+  console.log('Skip: Starting to load monitoring script')
 
-  scripts.src =
-    'http://localhost:3000/skip.js?d=' + Math.round(Date.now() / 900000)
-  scripts.async = true
-  scripts.onload = function onSkipScriptLoad() {
-    if (w.onerror && w.onerror !== onError) {
-      events.forEach((args) => w.onerror(...args))
-    } else {
-      setTimeout(onSkipScriptLoad, 100)
+  const script = document.createElement('script')
+  script.src = 'https://goskip.dev/skip.js?d=' + Math.round(Date.now() / 900000)
+  script.async = true
+  script.onload = () => {
+    (window as any).skipLibLoaded = true
+    console.log('Skip: Monitoring script loaded successfully')
+  }
+  script.onerror = (error) => {
+    console.error('Skip: Failed to load monitoring script:', error)
+    // Try fallback to localhost in development
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      console.log('Skip: Trying localhost fallback')
+      const fallbackScript = document.createElement('script')
+      fallbackScript.src = 'http://localhost:3000/skip.js?d=' + Math.round(Date.now() / 900000)
+      fallbackScript.async = true
+      fallbackScript.onload = () => {
+        (window as any).skipLibLoaded = true
+        console.log('Skip: Monitoring script loaded from localhost fallback')
+      }
+      fallbackScript.onerror = () => {
+        console.error('Skip: Both main and fallback script loading failed')
+      }
+      document.head.appendChild(fallbackScript)
     }
   }
 
-  d.head.appendChild(scripts)
+  document.head.appendChild(script)
 }
