@@ -34,7 +34,7 @@ const Index = () => {
                 className="w-[240px] justify-start text-left font-normal"
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                <span>Selecione um período</span>
+                <span>Selecione um períodoo</span>
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="end">
