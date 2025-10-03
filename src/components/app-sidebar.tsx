@@ -21,7 +21,7 @@ import {
 
 const navItems = [
   {
-    label: 'Dashboardfff ',
+    label: 'Dashboardeeee ',
     href: '/',
     icon: Home,
   },
